@@ -1,7 +1,7 @@
 name: Deployment to ECR by git
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 jobs:
   build:
     name: Build Image
