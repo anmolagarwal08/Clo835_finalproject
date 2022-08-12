@@ -12,24 +12,23 @@ jobs:
     
     
     steps:
-      - uses: actions/checkout@v3
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
    
-        env: 
-          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          AWS_REGION: us-east-1
+      env: 
+        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+        AWS_REGION: us-east-1
           
-      - name: Build, Test, Tag and push image ECR
-        env: 
-          ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
-          ECR_REPOSITORY: webapplication-image
-          IMAGE_TAG: v1
+    - name: Build, Test, Tag and push image ECR
+      env: 
+        ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
+        ECR_REPOSITORY: webapplication-image
+        IMAGE_TAG: v1
           
   
-       run: |
+      run: |
         ls -ltra
         # docker image build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
