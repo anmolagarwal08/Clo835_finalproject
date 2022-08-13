@@ -1,44 +1,53 @@
-name: Deployment to ECR by git
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy in ECR
+
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ main, FixForBug ]
-    
-    
+    branches: [ "master" ]
+  #pull_request:
+  #branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  deploy:
-    name: build image
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
-    
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
       
+    #Login to ECR
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-   
-    - name: aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with: 
-        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
         AWS_REGION: us-east-1
           
-    - name: Build, Test, Tag and push image ECR
-      env: 
-        ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
+    - name: Build, test, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: webapplication-image
-        IMAGE_TAG: imagev1
-          
-  
+        IMAGE_TAG: v2.0
       run: |
         ls -ltra
-        # docker image build
+        # Docker build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker run -d -p 8080:80 --name webapplication-image $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        # Unit test
+        docker run -d -p 8080:81 --name cat $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker ps
-        echo "sleep 10 secs for container to start"
+        echo "Pause for 10 seconds to let container start"
         sleep 10
         curl localhost:8080
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
