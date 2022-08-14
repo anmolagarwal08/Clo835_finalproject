@@ -17,7 +17,7 @@ spec:
       serviceAccountName: clo835
       containers:
         - name: simple-webapp-mysql
-          image: 466632150771.dkr.ecr.us-east-1.amazonaws.com/webapplication-image:imagev1
+          image: 817606801592.dkr.ecr.us-east-1.amazonaws.com/webapplication-image:imagev1
           ports:
             - containerPort: 81
           env:
@@ -30,18 +30,10 @@ spec:
             - name: app-secret-volumes
               mountPath: "/opt/app-secret-volumes"
               readOnly: true
-            - name: config-volume
-              mountPath: /clo835/config
           envFrom:
             - secretRef:
                 name: group11-secret
       volumes:
         - name: app-secret-volumes
           secret:
-            secretName: group11_secret
-        - name: config-volume
-          configMap:
-            name: group11-config
-            items:
-              - key: image_url
-                path: image_url
+            secretName: group11-secret
