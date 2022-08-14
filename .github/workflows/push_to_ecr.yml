@@ -35,7 +35,7 @@ jobs:
         ls -ltra
         # docker image build
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker run -d -p 8080:80 --name webapplication-image $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker run -d -p 8081:81 --name webapplication-image $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker ps
         echo "sleep 10 secs for container to start"
         sleep 10
