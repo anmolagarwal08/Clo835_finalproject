@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: group11-config
+data:
+  group: Group11
+  image_url: |
+    {  
+      "success_url":"https://final835.s3.amazonaws.com/success.jpg", 
+      "failed_url": "https://final835.s3.amazonaws.com/failed.png"
+    }

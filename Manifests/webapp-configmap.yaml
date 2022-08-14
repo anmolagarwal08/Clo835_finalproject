@@ -6,6 +6,6 @@ data:
   group: Group11
   image_url: |
     {  
+       "failed_url": "https://group11finals.s3.amazonaws.com/failed.png"
       "success_url": "https://group11finals.s3.amazonaws.com/success.jpg", 
-      "failed_url": "https://group11finals.s3.amazonaws.com/failed.png"
     }
