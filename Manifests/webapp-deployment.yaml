@@ -17,14 +17,14 @@ spec:
       serviceAccountName: clo835
       containers:
         - name: simple-webapp-mysql
-          image: 817606801592.dkr.ecr.us-east-1.amazonaws.com/webapplication-image:imagev1
+          image: 466632150771.dkr.ecr.us-east-1.amazonaws.com/webapplication-image:imagev1
           ports:
             - containerPort: 81
           env:
-            - name: GROUP_NAME
+            - name: group
               valueFrom:
                 configMapKeyRef:
-                  name: webapp-config
+                  name: group11-config
                   key: group
           volumeMounts:
             - name: app-secret-volumes
