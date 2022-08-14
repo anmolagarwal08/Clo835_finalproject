@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: 466632150771.dkr.ecr.us-east-1.amazonaws.com/webapplication-image:imagev1
+        image: mysql
         volumeMounts:
         - mountPath: /var/lib/mysql
           name: mysql-vol
